@@ -11,6 +11,16 @@ export default defineConfig({
   xpiDownloadLink:
     "https://github.com/{{owner}}/{{repo}}/releases/download/v{{version}}/{{xpiName}}.xpi",
 
+  // Publish releases to the current GitHub repo in CI (forks), while keeping
+  // updateURL/xpiDownloadLink templating based on package.json.repository.url.
+  // This lets you publish a fork build for manual install without changing the
+  // add-on auto-update channel.
+  release: {
+    github: {
+      repository: process.env.GITHUB_REPOSITORY ?? "{{owner}}/{{repo}}",
+    },
+  },
+
   build: {
     assets: ["addon/**/*.*"],
     define: {
